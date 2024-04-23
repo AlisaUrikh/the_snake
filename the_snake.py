@@ -26,6 +26,9 @@ APPLE_COLOR = (255, 0, 0)
 # Цвет змейки
 SNAKE_COLOR = (0, 255, 0)
 
+# Цвет по умолчанию
+DEFAULT_COLOR = (132, 195, 190)
+
 # Скорость движения змейки:
 SPEED = 20
 
@@ -39,21 +42,79 @@ pygame.display.set_caption('Змейка')
 clock = pygame.time.Clock()
 
 
+def handle_quit(event):
+    if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN
+                                     and event.key == pygame.ESCAPE):
+        pygame.quit()
+        raise SystemExit
+
+
+def handle_keys(game_object):
+    for event in pygame.event.get():
+        handle_quit(event)
+        # if event.type == pygame.QUIT:
+        #     pygame.quit()
+        #     raise SystemExit
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and game_object.direction != DOWN:
+                game_object.next_direction = UP
+            elif event.key == pygame.K_DOWN and game_object.direction != UP:
+                game_object.next_direction = DOWN
+            elif event.key == pygame.K_LEFT and game_object.direction != RIGHT:
+                game_object.next_direction = LEFT
+            elif event.key == pygame.K_RIGHT and game_object.direction != LEFT:
+                game_object.next_direction = RIGHT
+
+
 # Тут опишите все классы игры.
-...
+class GameObject:
+    def __init__(self):
+        self.position = (0, 0)
+        self.body_color = DEFAULT_COLOR
+
+    # Абстрактный переопределяемый класс
+    """Нарисовать объект ЦЕЛИКОМ"""
+    def draw(self):
+        pass
+
+
+class Apple(GameObject):
+
+    def __init__(self):
+        self.body_color = APPLE_COLOR
+        self.position = self.randomize_position()
+
+    def randomize_position(self):
+        return (
+            randint(0, GRID_WIDTH) * GRID_SIZE,
+            randint(0, GRID_HEIGHT) * GRID_SIZE
+            )
+
+    def draw(self):
+        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
+        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
+
+
+class Snake(GameObject):
+    pass
 
 
 def main():
     # Инициализация PyGame:
     pygame.init()
-    # Тут нужно создать экземпляры классов.
-    ...
 
-    # while True:
-    #     clock.tick(SPEED)
+    # Тут нужно создать экземпляры классов.
+    apple = Apple()
+    apple.draw()
+    snake = Snake()
+
+    while True:
+        clock.tick(SPEED)
 
         # Тут опишите основную логику игры.
-        # ...
+        handle_keys(snake)
+        pygame.display.update()
 
 
 if __name__ == '__main__':
