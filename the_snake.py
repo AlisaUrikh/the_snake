@@ -66,15 +66,20 @@ def handle_keys(game_object):
                 game_object.next_direction = RIGHT
 
 
+"""Базовый класс общих атрибутов игровых объектов"""
+
+
 class GameObject:
     def __init__(self, position=(0, 0), body_color=DEFAULT_COLOR):
         self.position = position
         self.body_color = body_color
 
-    # Абстрактный переопределяемый класс
-    """Отрисовка объекта целиком"""
+    """Абстрактный переопределяемый класс: отрисовка объектов целиком"""
     def draw(self):
         pass
+
+
+"""Унаследованный от GameObject класс: описание змейки и ее поведения"""
 
 
 class Apple(GameObject):
@@ -87,10 +92,10 @@ class Apple(GameObject):
         return (
             randint(0, GRID_WIDTH-1) * GRID_SIZE,
             randint(0, GRID_HEIGHT-1) * GRID_SIZE
-            )
+        )
 
+    """Отрисовка яблока"""
     def draw(self):
-        """Отрисовка яблока"""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
@@ -135,8 +140,8 @@ class Snake(GameObject):
             if len(self.positions) > self.length:
                 self.positions.pop()
 
+    """Отрисовка змейки"""
     def draw(self):
-        """Отрисовка змейки"""
         for position in self.positions:
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
