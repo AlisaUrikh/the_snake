@@ -68,6 +68,7 @@ def handle_keys(game_object):
 
 class GameObject:
     """Базовый класс общих атрибутов игровых объектов"""
+
     def __init__(self, position=(0, 0), body_color=DEFAULT_COLOR):
         self.position = position
         self.body_color = body_color
@@ -79,6 +80,7 @@ class GameObject:
 
 class Apple(GameObject):
     """Унаследованный от GameObject класс: описание яблока и действий с ним"""
+
     def __init__(self):
         super().__init__(self.randomize_position())
         self.body_color = APPLE_COLOR
@@ -99,6 +101,7 @@ class Apple(GameObject):
 
 class Snake(GameObject):
     """Унаследованный от GameObject класс: описание змейки и ее поведения"""
+
     def __init__(self):
         super().__init__(position=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
         self.length = 1
