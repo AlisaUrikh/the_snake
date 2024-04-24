@@ -66,23 +66,19 @@ def handle_keys(game_object):
                 game_object.next_direction = RIGHT
 
 
-"""Базовый класс общих атрибутов игровых объектов"""
-
-
 class GameObject:
+    """Базовый класс общих атрибутов игровых объектов"""
     def __init__(self, position=(0, 0), body_color=DEFAULT_COLOR):
         self.position = position
         self.body_color = body_color
 
-    """Абстрактный переопределяемый класс: отрисовка объектов целиком"""
     def draw(self):
+        """Абстрактный переопределяемый метод: отрисовка объектов целиком"""
         pass
 
 
-"""Унаследованный от GameObject класс: описание змейки и ее поведения"""
-
-
 class Apple(GameObject):
+    """Унаследованный от GameObject класс: описание яблока и действий с ним"""
     def __init__(self):
         super().__init__(self.randomize_position())
         self.body_color = APPLE_COLOR
@@ -90,18 +86,19 @@ class Apple(GameObject):
     def randomize_position(self):
         """Определение рандомных координат для отрисовки яблока"""
         return (
-            randint(0, GRID_WIDTH-1) * GRID_SIZE,
-            randint(0, GRID_HEIGHT-1) * GRID_SIZE
+            randint(0, GRID_WIDTH - 1) * GRID_SIZE,
+            randint(0, GRID_HEIGHT - 1) * GRID_SIZE
         )
 
-    """Отрисовка яблока"""
     def draw(self):
+        """Отрисовка яблока"""
         rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
         pygame.draw.rect(screen, BORDER_COLOR, rect, 1)
 
 
 class Snake(GameObject):
+    """Унаследованный от GameObject класс: описание змейки и ее поведения"""
     def __init__(self):
         super().__init__(position=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
         self.length = 1
@@ -140,8 +137,8 @@ class Snake(GameObject):
             if len(self.positions) > self.length:
                 self.positions.pop()
 
-    """Отрисовка змейки"""
     def draw(self):
+        """Отрисовка змейки"""
         for position in self.positions:
             rect = pygame.Rect(position, (GRID_SIZE, GRID_SIZE))
             pygame.draw.rect(screen, self.body_color, rect)
@@ -149,6 +146,7 @@ class Snake(GameObject):
 
 
 def main():
+    """Основной игровой цикл"""
     pygame.init()
     apple = Apple()
     snake = Snake()
